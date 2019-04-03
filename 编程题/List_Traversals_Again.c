@@ -16,15 +16,15 @@ struct TreeNode {
 }T[MaxTree];
 
 int N;
-static int count = 0;
 
 Tree biuldTree(struct TreeNode T[]) {
     Tree root, cur, t, stack[MaxTree];
-    int sh = 0, i = 1;
+    int sh = 0, i = 0;
     scanf("%d", &N);
     if(N == 0) return Null;
     char str[5];
     scanf("%s %d", str, &root);
+    i++;
     cur = root;
     stack[sh++] = cur;
     scanf("%s", str);
@@ -54,6 +54,7 @@ Tree biuldTree(struct TreeNode T[]) {
 }
 
 void postTraversal(Tree R) {
+    static int count = 0;
     if(R == Null) return;
     postTraversal(T[R].left);
     postTraversal(T[R].right);
