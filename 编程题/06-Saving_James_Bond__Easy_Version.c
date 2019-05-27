@@ -14,8 +14,8 @@ bool CanJump(int i, int j, int D) {
     return (Sqr(x[i] - x[j]) + Sqr(y[i] - y[j]) <= Sqr(D));
 }
 
-bool CanEscape(int i, int D) {
-    return (x[i] + 50 <= D) || (50 - x[i] <= D) || (x[i] + 50 <= D) || (50 - x[i] <= D);
+bool CanEscape(int i, double D) {
+    return (x[i] + 50 <= D) || (50 - x[i] <= D) || ( y[i] + 50 <= D) || (50 - y[i] <= D);
 }
 
 bool DFS(int i, int N) {
@@ -31,7 +31,7 @@ bool DFS(int i, int N) {
 bool Save007(int N, int D) {
     for(int i = 0; i < N; i++) {
         // 第一步单独处理
-        if(CanJump(101, i, D + 15) && !visited[i] && DFS(i, N))
+        if(CanJump(101, i, D + 15.0 / 2) && !visited[i] && DFS(i, N))
             return true;
     }
     return false;
