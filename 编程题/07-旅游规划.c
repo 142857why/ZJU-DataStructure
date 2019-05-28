@@ -8,11 +8,11 @@
 /* 就是个 Dijkstra，只是比较条件增加了一个 */
 
 int FindMinDist(int G[MAXN][MAXN], int dist[MAXN], int pri[MAXN], bool collected[MAXN], int N) {
-    int i, minl = INF, minp = INF, mini = -1;
+    // 这里不用管 price，在 Dijkstra 里考虑
+    int i, minl = INF, mini = -1;
     for(i = 0; i < N; i++) {
-        if(!collected[i] && (minl > dist[i] || (minl == dist[i] && minp > pri[i]))) {
+        if(!collected[i] && minl > dist[i]) {
             minl = dist[i];
-            minp = pri[i];
             mini = i;
         }
     }
