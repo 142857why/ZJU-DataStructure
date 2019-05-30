@@ -10,8 +10,9 @@
 /* 3.简单插入排序 */
 /* 4.希尔排序（用 Sedgwick 增量序列） */
 /* 5.冒泡排序 */
-/* 6.归并排序（递归版本） */
-/* 7.归并排序（非递归版本） */
+/* 6.快速排序 */
+/* 7.归并排序（递归版本） */
+/* 8.归并排序（非递归版本） */
 
 void Swap(int *a, int *b) {
     int t = *a; *a = *b; *b = t;
@@ -102,7 +103,46 @@ void BubbleSort(int A[], int N) {
     }
 }
 
-/* 6.归并排序（递归版本） */
+/* 6.快速排序 */
+int Median3(int A[], int Left, int Right) {
+    int Center = (Left + Right) / 2;
+    if(A[Left] > A[Center])
+        Swap(&A[Left], &A[Center]);
+    if(A[Left] > A[Right])
+        Swap(&A[Left], &A[Right]);
+    if(A[Center] > A[Right])
+        Swap(&A[Center], &A[Right]);
+    /* 此时 A[Left] <= A[Center] <= A[Right] */
+    Swap(&A[Center], &A[Right - 1]);
+    /* 只需考虑 A[Left + 1] .... A[Right - 2] */
+    return A[Right - 1];
+}
+
+void Qsort(int A[], int Left, int Right) {
+    int Pivot, Cutoff, Low, High;
+    Cutoff = 100;  // 瞎取的
+    if(Cutoff <= Right - Left) {  /* 如果序列元素充分多，进入快排 */
+        Pivot = Median3(A, Left, Right);
+        Low = Left; High = Right - 1;
+        while(1) {
+            while(A[++Low] < Pivot);
+            while(A[--High] > Pivot);
+            if(Low < High) Swap(&A[Low], &A[High]);
+            else break;
+        }
+        Swap(&A[Low], &A[Right - 1]);
+        Qsort(A, Left, Low - 1);
+        Qsort(A, Low + 1, Right);
+    }
+    else InsertionSort(A + Left, Right - Left + 1);
+}
+
+void QuickSort(int A[], int N) {
+    Qsort(A, 0, N - 1);
+}
+
+
+/* 7.归并排序（递归版本） */
 /* L:左边起始位置，R:右边起始位置，RightEnd：右边终点位置 */
 void Merge(int A[], int TmpA[], int L, int R, int RightEnd) {
     int LeftEnd, NumElements, Tmp;
@@ -145,7 +185,7 @@ void MergeSort_Recursive_Version(int A[], int N) {
     else printf("空间不足");
 }
 
-/* 7.归并排序（非递归版本） */
+/* 8.归并排序（非递归版本） */
 void Merge1(int A[], int TmpA[], int L, int R, int RightEnd) {
     /* 不再把 TmpA 放回 A */
     int LeftEnd, Tmp;
@@ -202,11 +242,11 @@ int main()
 //    InsertionSort(A, N);
 //    ShellSort(A, N);
 //    BubbleSort(A, N);
-    MergeSort_Recursive_Version(A, N);
+    QuickSort(A, N);
+//    MergeSort_Recursive_Version(A, N);
 //    MergeSort_Non_recursive_Version(A, N);
     for(i = 0; i < N - 1; i++)
         printf("%d ", A[i]);
     printf("%d\n", A[i]);
     return 0;
 }
-
